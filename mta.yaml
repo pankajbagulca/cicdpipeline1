@@ -26,6 +26,36 @@ modules:
     - npm install
     - npm run build:cf
     supported-platforms: []
+- name: ciccdpipeline1-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: ciccdpipeline1-destination-service
+    parameters:
+      content-target: true
+  - name: ciccdpipeline1-repo-host
+    parameters:
+      service-key:
+        name: ciccdpipeline1-repo-host-key
+  - name: uaa_ciccdpipeline1
+    parameters:
+      service-key:
+        name: uaa_ciccdpipeline1-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: appointmentapp_ciccdpipeline1_repo_host
+          ServiceInstanceName: ciccdpipeline1-html5-srv
+          ServiceKeyName: ciccdpipeline1-repo-host-key
+          sap.cloud.service: appointmentapp
+        - Authentication: OAuth2UserTokenExchange
+          Name: appointmentapp_uaa_ciccdpipeline1
+          ServiceInstanceName: ciccdpipeline1-xsuaa-service
+          ServiceKeyName: uaa_ciccdpipeline1-key
+          sap.cloud.service: appointmentapp
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
 resources:
 - name: ciccdpipeline1-repo-host
   type: org.cloudfoundry.managed-service
@@ -37,19 +67,17 @@ resources:
   type: org.cloudfoundry.managed-service
   parameters:
     config:
-      HTML5Runtime_enabled: false
-      init_data:
-        instance:
-          destinations:
-          - Authentication: NoAuthentication
-            Name: ui5
-            ProxyType: Internet
-            Type: HTTP
-            URL: https://ui5.sap.com
-          existing_destinations_policy: update
+      HTML5Runtime_enabled: true
       version: 1.0.0
     service: destination
     service-name: ciccdpipeline1-destination-service
     service-plan: lite
+- name: uaa_ciccdpipeline1
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: ciccdpipeline1-xsuaa-service
+    service-plan: application
 parameters:
   deploy_mode: html5-repo

@@ -2,11 +2,11 @@
  * eslint-disable @sap/ui5-jsdocs/no-jsdoc
  */
 
-// sap.ui.define([
-//         "sap/ui/core/UIComponent",
-//         "sap/ui/Device",
-//         "appointmentviewapp/model/models"
-//     ],
+sap.ui.define([
+        "sap/ui/core/UIComponent",
+        "sap/ui/Device",
+        "appointmentviewapp/model/models"
+    ],
     function (UIComponent, Device, models) {
         "use strict";
 
